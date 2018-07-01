@@ -12,7 +12,9 @@ import java.util.LinkedList;
 @Repository("bookDao")
 public interface BookRepository extends CrudRepository<Book, Integer> {
     LinkedList<Book> findAll();
+
     //Book findByBookId(Integer bookId);
     Book findByBsdn(String bsdn);
+
     void deleteByBsdn(String bsdn);
 }

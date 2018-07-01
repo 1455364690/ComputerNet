@@ -2,12 +2,15 @@ package com.sunjiahui.controller;
 
 import com.sunjiahui.model.Book;
 import com.sunjiahui.service.BookService;
+import com.sunjiahui.service.impl.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -22,6 +25,9 @@ public class BookController {
 
     @Autowired
     private BookService bookService;
+
+    @Value("${storage.upload-dir}")
+    private String filePath;
 
     //获取所有书目
     @GetMapping("/getAllBooks")
@@ -56,15 +62,31 @@ public class BookController {
                                            @RequestParam Integer number,
                                            @RequestParam String price,
                                            @RequestParam Timestamp publishTime,
-                                           @RequestParam String note) {
+                                           @RequestParam String note,
+                                           @RequestParam MultipartFile file) {
         HashMap<String, Object> map = new HashMap<>();
         Timestamp currTime = new Timestamp(System.currentTimeMillis());
         Book book = new Book();
+
+        //存储图片，图片名为对应的bsdn
+        String oldName = file.getOriginalFilename();
+        String[] names = oldName.split("\\.");
+        String fileName = bsdn + "." + names[names.length - 1];
+        //System.out.println(contentType+","+fileName+","+filePath);
+        try {
+            FileUtil.uploadFile(file.getBytes(), filePath, fileName);
+        } catch (Exception e) {
+            map.put("code", "4");
+            map.put("message", "add:failure:" + e.toString());
+            return map;
+        }
+
         book.setBookName(bookName);
         book.setBsdn(bsdn);
         book.setAuthor(author);
         book.setNumber(number);
         book.setPrice(price);
+        book.setImg(fileName);
         book.setPublishTime(publishTime);
         book.setAddTime(currTime);
         book.setNote(note);
@@ -110,7 +132,7 @@ public class BookController {
             map.put("code", "2");
             map.put("message", "modify:failure:" + e.toString());
         }
-        if(!flag){
+        if (!flag) {
             map.put("code", "3");
             map.put("message", "modify:failure:库存不足");
             return map;

@@ -26,6 +26,9 @@ public class Book {
     @Column(name = "price")
     private String price;
 
+    @Column(name = "img")
+    private String img;
+
     @Column(name = "publish_time")
     private Timestamp publishTime;
 
@@ -38,12 +41,13 @@ public class Book {
     public Book() {
     }
 
-    public Book(String bookName, String bsdn, String author, Integer number, String price, Timestamp publishTime, Timestamp addTime, String note) {
+    public Book(String bookName, String bsdn, String author, Integer number, String price,String img, Timestamp publishTime, Timestamp addTime, String note) {
         this.bookName = bookName;
         this.bsdn = bsdn;
         this.author = author;
         this.number = number;
         this.price = price;
+        this.img = img;
         this.publishTime = publishTime;
         this.addTime = addTime;
         this.note = note;
@@ -87,6 +91,14 @@ public class Book {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public Timestamp getPublishTime() {

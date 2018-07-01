@@ -9,8 +9,12 @@ import java.util.LinkedList;
  */
 public interface BookService {
     Book addBook(Book book);
+
     Book getBookByBsdn(String BSDN);
+
     void deleteByBsdn(String bsdn);
-    boolean modifyBookNumByBsdn(String Bsdn,Integer number);
+
+    boolean modifyBookNumByBsdn(String Bsdn, Integer number);
+
     LinkedList<Book> getAllBook();
 }

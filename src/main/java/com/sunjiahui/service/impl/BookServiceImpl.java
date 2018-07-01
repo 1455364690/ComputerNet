@@ -14,38 +14,42 @@ import java.util.LinkedList;
  */
 @Service("bookService")
 @Transactional
-public class BookServiceImpl implements BookService{
+public class BookServiceImpl implements BookService {
     @Autowired
     private BookRepository bookDao;
+
     //添加书目
-    public Book addBook(Book book){
+    public Book addBook(Book book) {
         bookDao.save(book);
         return null;
     }
 
     //通过BSDN查询书目
-    public Book getBookByBsdn(String Bsdn){
+    public Book getBookByBsdn(String Bsdn) {
         return bookDao.findByBsdn(Bsdn);
     }
+
     //删除书目
-    public void deleteByBsdn(String bsdn){
+    public void deleteByBsdn(String bsdn) {
         bookDao.deleteByBsdn(bsdn);
     }
+
     //修改书目的数量，如果不足0则返回false
-    public boolean modifyBookNumByBsdn(String bsdn,Integer number){
+    public boolean modifyBookNumByBsdn(String bsdn, Integer number) {
         boolean flag = true;
         Book book = bookDao.findByBsdn(bsdn);
         int oldNum = book.getNumber();
         int newNum = oldNum + number;
-        if (newNum < 0){
+        if (newNum < 0) {
             flag = false;
-        }else{
+        } else {
             book.setNumber(newNum);
             bookDao.save(book);
         }
         return flag;
     }
-    public LinkedList<Book> getAllBook(){
+
+    public LinkedList<Book> getAllBook() {
         return bookDao.findAll();
     }
 }
