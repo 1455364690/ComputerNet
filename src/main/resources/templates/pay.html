@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>pay test page</title>
+</head>
+<body>
+<div class="content">
+    <h2>支付宝接入测试页面</h2>
+    <form name="form" th:action="@{/littlefinger/pay/alipay}" action="/pay/alipay" method="POST">
+        <fieldset>
+            <input type="text" name="templateId" value="" placeholder="TemplateId"/>
+            <input type="text" name="timeId" placeholder="TimeId"/>
+        </fieldset>
+        <input type="submit" id="paybtn" value="confirm"
+               class="btn btn-primary"/>
+    </form>
+</div>
+</body>
+</html>
